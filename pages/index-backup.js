@@ -3,18 +3,18 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [dreamInput, setDreamInput] = useState("");
+  const [animalInput, setAnimalInput] = useState("");
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
     try {
-      const response = await fetch("/api/chatgpt-api", {
+      const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ dream: dreamInput }),
+        body: JSON.stringify({ animal: animalInput }),
       });
 
       const data = await response.json();
@@ -23,7 +23,7 @@ export default function Home() {
       }
 
       setResult(data.result);
-      setDreamInput("");
+      setAnimalInput("");
     } catch(error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -34,22 +34,22 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Dreamcatchr</title>
+        <title>OpenAI Quickstart</title>
         <link rel="icon" href="/dog.png" />
       </Head>
 
       <main className={styles.main}>
         <img src="/dog.png" className={styles.icon} />
-        <h3>Interpret my dream</h3>
+        <h3>Name my pet</h3>
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="dream"
-            placeholder="Tell me your dream to receive an interpretation!"
-            value={dreamInput}
-            onChange={(e) => setDreamInput(e.target.value)}
+            name="animal"
+            placeholder="Enter an animal"
+            value={animalInput}
+            onChange={(e) => setAnimalInput(e.target.value)}
           />
-          <input type="submit" value="Interpret dream" />
+          <input type="submit" value="Generate names" />
         </form>
         <div className={styles.result}>{result}</div>
       </main>
